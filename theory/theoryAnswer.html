@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>成绩</title>
+  <style>
+table {border:1px solid #ccc; border-collapse: collapse;width:100%;}
+    table td {border:1px solid #ccc;text-align:left;height:30px;}
+    button {  
+        width: 200px;  
+        height:50px;
+        margin-top:10px;
+        padding:8px;  
+        background-color: #428bca;  
+        border-color: #357ebd;  
+        color: #fff;  
+        -moz-border-radius: 10px;  
+        -webkit-border-radius: 10px;  
+        border-radius: 10px; /* future proofing */  
+        -khtml-border-radius: 10px; /* for old Konqueror browsers */  
+        text-align: center;  
+        vertical-align: middle;  
+        border: 1px solid transparent;  
+        font-weight: 900;  
+        font-size:125%  
+      }  
+  </style>
+</head>
+<body onload="init()">
+  <div class="table"></div>
+  
+
+  <script>
+    var questionNumber;
+    var questionNum;
+    function init(){
+      questionNumber = 0;
+      var result = sessionStorage.getItem("result");
+      var rightAnswer = sessionStorage.getItem("rightOption");
+      var radio = sessionStorage.getItem("radio");
+      
+      var trueOrFalse = sessionStorage.getItem("trueOrFalse");
+      radio = JSON.parse(radio);
+      trueOrFalse = JSON.parse(trueOrFalse);
+      console.log(result);
+      console.log(rightAnswer)
+
+      result = result.split(",");
+      rightAnswer = rightAnswer.split(",");
+
+      let table = ``;
+      table +='<tr style="background:#ccc"><td>单选题</td></tr>';
+      questionNum=1;
+      for(let i = 0;i<radio.length;i++){
+        cell = radio[i].split(",");
+        table +=showRows(cell,"单选题",result,rightAnswer);
+      }
+      table +='<tr style="background:#ccc"><td>判断题</td></tr>';
+      questionNum=1;
+      for(let i = 0;i<trueOrFalse.length;i++){
+        cell = trueOrFalse[i].split(",");
+        table +=showRows(cell,"判断题",result,rightAnswer);
+      }
+
+
+
+
+      table = `<form><table>${table}</table><div align="center"><button type="button" onclick='comeBack()' >返回首页</button></div></form>`;
+      document.querySelector('.table').innerHTML = table; // 显示table表格
+
+    }
+    function showRows(cell,type,result,rightAnswer){
+      let tr='';
+      tr +='<tr><td>'+questionNum+'.'+cell[1]+'</td></tr>';//题目
+
+      if(type == "单选题"){
+        for(let i = 0;i< cell.length-3;i++){
+          tr +='<tr><td><label>'+String.fromCharCode(i+65)+'.'+cell[i+3]+'</label></td></tr>';
+        }
+      }else{
+        for(let i = 0;i<cell.length-3;i++){
+          tr +='<tr><td><label>'+String.fromCharCode(i+65)+'.'+cell[i+3]+'</label></td></tr>';
+        }
+      }
+      if(result[questionNumber] != rightAnswer[questionNumber]){
+        tr +='<tr><td style="color:red">'+'你的答案为：'+result[questionNumber]+'正确答案为：'+rightAnswer[questionNumber]+'</td></tr>';//题目
+      }else
+      tr +='<tr><td>'+'你的答案为：'+result[questionNumber]+'正确答案为：'+rightAnswer[questionNumber]+'</td></tr>';//题目
+      questionNumber++;
+      questionNum++;
+      return tr;
+    }
+    function comeBack(){
+      window.location.href="../index.html";
+      sessionStorage.clear();
+    }
+  </script>
+</body>
+</html>
+
+

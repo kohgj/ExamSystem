@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>成绩</title>
+  <style>
+    .score {
+      font-family: "Times New Roman", Times, serif;
+      margin-top:50px;
+      margin-bottom: 50px;
+      text-align:center;
+      font-size:24px;
+
+    }
+    .button{
+      text-align: center;
+      margin-bottom:50px;
+    }
+
+    button {  
+        width: 300px;  
+        height:100px;
+        padding:8px;  
+        background-color: #428bca;  
+        border-color: #357ebd;  
+        color: #fff;  
+        -moz-border-radius: 10px;  
+        -webkit-border-radius: 10px;  
+        border-radius: 10px; /* future proofing */  
+        -khtml-border-radius: 10px; /* for old Konqueror browsers */  
+        text-align: center;  
+        vertical-align: middle;  
+        border: 1px solid transparent;  
+        font-weight: 900;  
+        font-size:125%  
+      }  
+  </style>
+</head>
+<body onload="init()">
+  <div class="score"></div>
+  <div class="button"><button type="button" onclick="showAnswer()">查看错题</button></div>
+  <div class="button"><button type="button" onclick="comeBack()">返回首页</button></div>
+  
+  
+
+  <script>
+    function init(){
+      var score=100;
+      var result = sessionStorage.getItem("result");
+      result = result.split(",");
+      var rightAnswer = sessionStorage.getItem("rightOption");
+      rightAnswer = rightAnswer.split(",");
+      for(var i = 0;i<result.length;i++){
+        if(result[i] != rightAnswer[i]){
+          score--;
+        }
+      }
+      score = "你的分数为:" + "  "+score;
+      document.querySelector('.score').innerHTML = score.toString(); // 显示table表格
+    }
+
+    function showAnswer(){
+      window.location.href="theoryAnswer.html";
+    }
+
+    function comeBack(){
+      window.location.href="../index.html";
+      sessionStorage.clear();
+    }
+
+
+  </script>
+</body>
+</html>
+
+
+
+
+
